@@ -22,6 +22,8 @@ class Member(models.Model):
     email_address = models.EmailField()
     phone_number = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
+    front_image = CloudinaryField('image')
+    back_image = CloudinaryField('image')
     status = models.CharField(max_length=255)
 
     def __str__(self):

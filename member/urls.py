@@ -15,9 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from .views import member_list
+from .views import member_list,single_member,new_member,user_list,single_user
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/members'member_list.as_view()),
+    url(r'^api/members/$',member_list.as_view()),
+    url(r'^api/member/(?P<pk>[0-9]+)/$',single_member.as_view()),
+    url(r'^api/member/new/$',new_member.as_view()),
+    url(r'^api/users/$',user_list.as_view()),
+    url(r'^api/user/new/$',user_list.as_view()),
+    url(r'^api/user/(?P<pk>[0-9]+)/$',single_user.as_view())
 ]
