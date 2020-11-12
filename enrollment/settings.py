@@ -22,13 +22,23 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '*ifq(eh=-q2qme*-ajw9r(bw)nb_@e5jawuxdbh1@(6g^pee=6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +50,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'django_filters',
     'cloudinary',
@@ -54,6 +65,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
 ROOT_URLCONF = 'enrollment.urls'
@@ -81,10 +95,9 @@ WSGI_APPLICATION = 'enrollment.wsgi.application'
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+    'default': dj_database_url.config(
+        default= config('DATABASE_URL')
+    )
 }
 
 
@@ -114,6 +127,9 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
+TIME_ZONE = 'Africa/Nairobi'
+
+
 USE_I18N = True
 
 USE_L10N = True
@@ -127,7 +143,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 cloudinary.config(
-    cloud_name = 'iconic-software',
-    api_key = '173755698892671',
-    api_secret = 'jPoGCHXEQhgY4heB9nCDQZ2PPs8'
+    cloud_name = config('cloud_name'),
+    api_key =  config('api_key'),
+    api_secret = config('api_secret')
 )
