@@ -1,6 +1,7 @@
 from .models import Member
+from rest_framework.response import Response
 from rest_framework import generics,status,filters
-from rest_framework.views import APIView,Response,Http404
+from rest_framework.views import APIView,Http404
 from .serializers import MemberSerializers,MembersSerializers,UserSerializers
 
 
@@ -9,6 +10,15 @@ class member_list(APIView):
         all_members = Member.objects.all()
         serializers = MembersSerializers(all_members,many=True)
         return Response(serializers.data)
+
+    def post(self,request,format=None):
+        serializers = MembersSerializers(data=request.data)
+        if serializers.is_valid:
+            serializers.save
+            return Response(serializers.data,status = status.HTTP_201_CREATED)
+        else:
+            return Response(serializers.errors,status = status.HTTP_400_BAD_REQUEST)
+
 
 class single_member(APIView):
     def get_member(self,pk):
