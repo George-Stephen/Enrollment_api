@@ -24,7 +24,7 @@ class Member(models.Model):
     address = models.CharField(max_length=255)
     front_image = CloudinaryField('image')
     back_image = CloudinaryField('image')
-    status = models.CharField(max_length=255)
+    status = models.CharField(max_length=255,default="Active")
 
     def __str__(self):
         return self.id_number
