@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+from .views import member_list
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^api/members'member_list.as_view()),
 ]
