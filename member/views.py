@@ -3,6 +3,20 @@ from rest_framework.response import Response
 from rest_framework import generics,status,filters
 from rest_framework.views import APIView,Http404
 from .serializers import MemberSerializers,MembersSerializers,UsersSerializers,UserSerializers
+from django_filters.rest_framework import DjangoFilterBackend
+
+class search_user(generics.ListAPIView):
+        queryset = User.objects.all()
+        serializer_class = UsersSerializers
+        filter_backends = [DjangoFilterBackend]
+        filterset_fields = ['email_address','password']
+
+class search_member(generics.ListAPIView):
+    queryset = Member.objects.all()
+    serializer_class = MembersSerializers
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['id_number']
+
 
 class user_list(APIView):
     def get(self,request,format=None):
@@ -32,11 +46,6 @@ class single_user(APIView):
         return Response(serializers.data)
 
 
-class member_list(APIView):
-    def get(self,request,format=None):
-        all_members = Member.objects.all()
-        serializers = MembersSerializers(all_members,many=True)
-        return Response(serializers.data)
 
 class new_member(APIView):
     def post(self,request,format=None):
